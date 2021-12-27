@@ -1,0 +1,169 @@
+#!markdown
+
+# Record Structs    
+
+#!csharp
+
+public record struct Point(double X, double Y);
+
+var point = new Point(1, 2);
+display(point);
+display("Point is value type: " + point.GetType().IsValueType);
+
+#!markdown
+
+# Record Structs are mutable by default
+
+#!csharp
+
+public record struct Point(double X, double Y);
+public readonly record struct PointReadonly(double X, double Y);
+
+// mutable
+var point = new Point(1, 2);
+point.X = 12d;
+display(point);
+
+// immutable
+var pointReadonly = new PointReadonly(4,5);
+// syntax error
+// pointReadonly.X = 12d;
+
+#!markdown
+
+Records can optionally be marked with class to be explicitly reference types.
+
+#!csharp
+
+// class record positional properties continue to be immutable
+public record PointRef(double X, double Y); 
+// same as 
+public record class PointRefExplicit(double X, double Y);
+
+var pointRef = new PointRef(4,5);
+var pointRefExplicit = new PointRefExplicit(4,5);
+
+
+display("Is value type: " + pointRef.GetType().IsValueType);
+display("Is value type: " + pointRefExplicit.GetType().IsValueType);
+
+// syntax error
+// pointReadonly.X = 12d;
+
+#!markdown
+
+# Interpolated string handler
+https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler
+
+#!markdown
+
+# Global using directives
+- global keyword added to a using directive
+- Applies to compilation scope (typically a project). ProjectA references Project B. ProjectB has a global using declaration.  ProjectA will not use this global declaration.
+- Different from implicit usings which are a .net feature.
+- Best practice: Place all of them in a file called GlobalUsings.cs.
+
+#!markdown
+
+# File-scoped namespace declaration
+- Simple
+- No reason not to use.
+- Hint: Use resharper to set a filescoped namespace for every class in the entire solution in a few clicks. (This may take awhile)
+- Can not mix and match namespace declarations.
+
+#!csharp
+
+public record Address(string Street, string City, string State, string Zip);
+public record Person(string FirstName, string LastName, Address Address);
+
+var person = new Person("John", "Doe", new Address("123 Main St", "Anytown", "NY", "12345"));
+
+// new simpler syntax
+if(person is {Address.City: "Anytown"}){
+    display($"Person lives in {person.Address.City}.");
+}
+
+// Prior to C# 10
+if(person is {Address: {City: "Anytown"}}){
+    display($"Person lives in {person.Address.City}.");
+}
+
+#!markdown
+
+# Lambda expression improvements
+- Lambda expressions may have a natural type, where the compiler can infer a delegate type from the lambda expression or method group.
+- Lambda expressions may declare a return type when the compiler can't infer it.
+- Attributes can be applied to lambda expressions.
+- Why?  To allow lamda expressions to fully replace method declaration when needed.
+
+#!csharp
+
+// Inferred type
+var parse = (string s) => int.Parse(s);
+
+// used to be:
+Func<string, int> oldParse = (string s) => int.Parse(s);
+
+#!csharp
+
+// Explicit return type
+// var choose = (bool b) => b ? 1 : "two"; // ERROR: Can't infer return type
+
+// explicit return type
+var choose = object (bool b) => b ? 1 : "two"; // Func<bool, object>
+
+#!csharp
+
+public class ExampleAttribute : Attribute
+{
+    public ExampleAttribute(int value)
+    {
+        Value = value;
+    }
+
+    public int Value { get; }
+}
+
+public class Example2Attribute : Attribute
+{
+    public Example2Attribute(int value)
+    {
+        Value = value;
+    }
+
+    public int Value { get; }
+}
+
+
+var parse = [Example(1)] (string s) => int.Parse(s);
+var choose = [Example(2)][Example2(3)] object (bool b) => b ? 1 : "two";
+var sum = ([Example(1)] int a, [Example(2), Example2(3)] int b) => a + b;
+var inc = [return: Example(1)] (int s) => s++;
+
+var foundParseAttributes = parse.Method.GetCustomAttributes(true).OfType<ExampleAttribute>().ToList();
+var foundChooseAttributes = choose.Method.GetCustomAttributes(true).OfType<Example2Attribute>().ToList();
+
+display($"parse Example value: {foundAttributes[0].Value}");
+display($"choose Example2 value: {foundChooseAttributes[0].Value}");
+
+#!markdown
+
+# Constant interpolated strings
+- String interpolation may initialize a const string if all placeholders are also constants.
+
+#!markdown
+
+# Record types can seal ToString
+- This ensures all derived record types use the common ToString method in a base class.
+
+#!markdown
+
+# Improved definite assignment
+- Fixed false positives when identifying possible null values.
+
+#!markdown
+
+# Allow AsyncMethodBuilder attribute on methods
+# CallerArgumentExpression attribute diagnostics
+# Enhanced #line pragma
+# Generic attributes (preview)

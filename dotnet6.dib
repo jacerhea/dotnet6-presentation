@@ -1,0 +1,19 @@
+#!markdown
+
+# .NET 6 Highlights
+- Supported for three years as the latest long term support (LTS) release.
+- Performance is greatly improved across the board and for file I/O in particular, which together result in decreased execution time, latency, and memory use.
+- C# 10 offers language improvements such as record structs, implicit using, and new lambda capabilities, while the compiler adds incremental source generators. F# 6 adds new features including Task based async, pipeline debugging and numerous performance improvements.
+- Hot Reload enables you to skip rebuilding and restarting your app to view a new change — while your app is running — supported in Visual Studio 2022 and from the .NET CLI, for C# and Visual Basic.
+- Cloud diagnostics have been improved with OpenTelemetry and dotnet monitor, which is now supported in production and available with Azure App Service.
+- JSON APIs are more capable and have higher performance with a source generator for the serializer.
+- Minimal APIs introduced in ASP.NET Core to simplify the getting started experience and improve the performance of HTTP services.
+- Blazor components can now be rendered from JavaScript and integrated with existing JavaScript based apps.
+- WebAssembly AOT compilation for Blazor WebAssembly (Wasm) apps, as well as support for runtime relinking and native dependencies.
+- Single-page apps built with ASP.NET Core now use a more flexible pattern that can be used with Angular, React, and other popular frontend JavaScript frameworks.
+- HTTP/3 has been added so that ASP.NET Core, HttpClient, and gRPC can all interact with HTTP/3 clients and servers.
+- File IO now has support for symbolic links and has greatly improved performance with a re-written-from-scratch FileStream.
+- Security has been improved with support for OpenSSL 3, the ChaCha20Poly1305 encryption scheme, and runtime defense-in-depth mitigations, specifically W^X and CET.
+- IL trimming is now more capable and effective, with new warnings and analyzers to ensure correct final results.
+- Source generators and analyzers have been added that help you produce better, safer, and higher performance code.
+- Source build enables organizations like Red Hat to build .NET from source and offer their own builds to their users.
