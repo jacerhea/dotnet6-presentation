@@ -43,7 +43,6 @@ public record class PointRefExplicit(double X, double Y);
 var pointRef = new PointRef(4,5);
 var pointRefExplicit = new PointRefExplicit(4,5);
 
-
 display("Is value type: " + pointRef.GetType().IsValueType);
 display("Is value type: " + pointRefExplicit.GetType().IsValueType);
 
@@ -70,6 +69,10 @@ https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-
 - No reason not to use.
 - Hint: Use resharper to set a filescoped namespace for every class in the entire solution in a few clicks. (This may take awhile)
 - Can not mix and match namespace declarations.
+
+#!markdown
+
+# Extended property patterns
 
 #!csharp
 
