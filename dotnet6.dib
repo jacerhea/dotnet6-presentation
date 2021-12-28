@@ -17,3 +17,89 @@
 - IL trimming is now more capable and effective, with new warnings and analyzers to ensure correct final results.
 - Source generators and analyzers have been added that help you produce better, safer, and higher performance code.
 - Source build enables organizations like Red Hat to build .NET from source and offer their own builds to their users.
+
+#!markdown
+
+# Minimal API framework
+
+#!markdown
+
+# DateOnly and TimeOnly types
+- Ignore timezones and only deal with calendar dates or time on a 24 hour clock.
+- EF support is not planned until .net 7.
+
+#!csharp
+
+DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+// there is no "Kind" property.  date.Kind
+display(date); 
+
+TimeOnly time = TimeOnly.FromDateTime(DateTime.Now);
+display(time); 
+
+var in20Hours = time.AddHours(24);
+display(in20Hours); 
+
+#!markdown
+
+# Implicit global using directives
+- Based on SDK.
+- https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
+- In your project file at the sdk levels and/or at individual namespace level.
+- `<ImplicitUsings>enable</ImplicitUsings>`
+- `<ItemGroup>
+  <Using Remove="System.Threading" />
+  <Using Include="Microsoft.Extensions.Logging" />`
+</ItemGroup>
+
+#!markdown
+
+# LINQ OrDefault Enhancements
+
+#!csharp
+
+var hayStack = new List<int> { 1, 2, 3, 4};
+var needle = 5;
+
+// old
+var foundValue = hayStack.FirstOrDefault(x => x == needle);
+display(foundValue);
+// new
+foundValue = hayStack.FirstOrDefault(x => x == needle, 8);
+display(foundValue);
+
+#!markdown
+
+# IEnumerable Chunk In .NET 6
+- Replace skip + take for paging.
+
+#!csharp
+
+var list = Enumerable.Range(1, 100);
+var chunkSize = 10;
+foreach(var chunk in list.Chunk(chunkSize)) //Returns a chunk with the correct size. 
+{
+    display(chunk);
+
+    foreach(var item in chunk)
+    {
+        display(item);
+    }
+}
+
+#!markdown
+
+# MaxBy / MinBy
+
+#!csharp
+
+public record Person(string Name, int Age);
+
+var people = new List<Person>
+{
+    new Person("John Smith", 20),
+    new Person("Jane Smith", 30),
+};
+
+display(people.Max(x => x.Age)); //Outputs 30
+display(people.MaxBy(x => x.Age)); //Outputs 30
