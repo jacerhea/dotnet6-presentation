@@ -31,11 +31,16 @@
 #!csharp
 
 DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+DateOnly newYears = new DateOnly(2022, 1, 1);
 // there is no "Kind" property.  date.Kind
 display(date); 
+display(newYears); 
+
 
 TimeOnly time = TimeOnly.FromDateTime(DateTime.Now);
+TimeOnly ptStartTime = new TimeOnly(8, 0);
 display(time); 
+display(ptStartTime); 
 
 var in20Hours = time.AddHours(24);
 display(in20Hours); 
@@ -55,13 +60,16 @@ display(in20Hours);
 #!markdown
 
 # LINQ Enhancements
-- https://www.infoq.com/news/2021/04/Net6-Linq/ 
 - Indexing Operations on IEnumerable<T>
 - Counting Operations on IEnumerable<T>
 - Three-way Zip Extension Method
 - Batching Sequences
 - *By Operators
 - OrDefault Enhancement
+
+#!markdown
+
+# Indexing Operations
 
 #!csharp
 
@@ -74,19 +82,33 @@ var source = Enumerable.Range(0, 100);
 var elements = source.Take(range: 10..^10);
 display(elements);
 
-var hayStack = new List<int> { 1, 2, 3, 4};
-var needle = 5;
+#!markdown
 
-// old
-var foundValue = hayStack.FirstOrDefault(x => x == needle);
-display(foundValue);
-// new
-foundValue = hayStack.FirstOrDefault(x => x == needle, 8);
-display(foundValue);
+# Quick Count or default
+
+#!csharp
+
+var source = Enumerable.Range(0, 100);
+// var normalCount = source.Count();
+var found = source.TryGetNonEnumeratedCount(out var count);
+display(found);
+display(count);
 
 #!markdown
 
-# IEnumerable Chunk In .NET 6
+# Zip 3 way
+
+#!csharp
+
+var set1 = Enumerable.Range(0, 10);
+var set2 = Enumerable.Range(10, 10);
+var set3 = Enumerable.Range(20, 7);
+var zipped3 = set1.Zip(set2, set3);
+display(zipped3);
+
+#!markdown
+
+# IEnumerable Chunk
 - Replace skip + take for paging.
 
 #!csharp
@@ -105,9 +127,31 @@ foreach(var chunk in list.Chunk(chunkSize)) //Returns a chunk with the correct s
 
 #!markdown
 
-# MaxBy / MinBy
+# *By Operators
 
 #!csharp
+
+// public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector);
+// public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer);
+
+// public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector);
+// public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer);
+// public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelectorFirst);
+// public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelectorFirst, IEqualityComparer<TKey>? comparer);
+
+// public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector);
+// public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer);
+// public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelectorFirst);
+// public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelectorFirst, IEqualityComparer<TKey>? comparer);
+
+// public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector);
+// public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer);
+
+// public static TSource MinBy<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector);
+// public static TSource MinBy<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, IComparer<TResult>? comparer);
+
+// public static TSource MaxBy<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector);
+// public static TSource MaxBy<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, IComparer<TResult>? comparer);
 
 public record Person(string Name, int Age);
 
@@ -117,5 +161,21 @@ var people = new List<Person>
     new Person("Jane Smith", 30),
 };
 
-display(people.Max(x => x.Age)); //Outputs 30
-display(people.MaxBy(x => x.Age)); //Outputs 30
+display(people.Max(x => x.Age)); // outputs 30
+display(people.MaxBy(x => x.Age)); //Outputs Jane Smith
+
+#!markdown
+
+# *OrDefault
+
+#!csharp
+
+var hayStack = new List<int> { 1, 2, 3, 4};
+var needle = 5;
+
+// old
+var foundValue = hayStack.FirstOrDefault(x => x == needle);
+display(foundValue);
+// new
+foundValue = hayStack.FirstOrDefault(x => x == needle, 8);
+display(foundValue);

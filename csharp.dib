@@ -1,5 +1,12 @@
 #!markdown
 
+# C# 10 - New features
+- QOL changes
+- Consistency
+- Reduce the amount of code to write.
+
+#!markdown
+
 # Record Structs    
 
 #!csharp
@@ -21,7 +28,9 @@ public readonly record struct PointReadonly(double X, double Y);
 
 // mutable
 var point = new Point(1, 2);
-point.X = 12d;
+display(point);
+point.X++;
+point.Y++;
 display(point);
 
 // immutable
@@ -62,6 +71,11 @@ https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-
 - Different from implicit usings which are a .net feature.
 - Best practice: Place all of them in a file called GlobalUsings.cs.
 
+#!csharp
+
+global using System.Linq;
+global using System.Collections.Generic;
+
 #!markdown
 
 # File-scoped namespace declaration
@@ -70,25 +84,11 @@ https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-
 - Hint: Use resharper to set a filescoped namespace for every class in the entire solution in a few clicks. (This may take awhile)
 - Can not mix and match namespace declarations.
 
-#!markdown
-
-# Extended property patterns
-
 #!csharp
 
-public record Address(string Street, string City, string State, string Zip);
-public record Person(string FirstName, string LastName, Address Address);
-
-var person = new Person("John", "Doe", new Address("123 Main St", "Anytown", "NY", "12345"));
-
-// new simpler syntax
-if(person is {Address.City: "Anytown"}){
-    display($"Person lives in {person.Address.City}.");
-}
-
-// Prior to C# 10
-if(person is {Address: {City: "Anytown"}}){
-    display($"Person lives in {person.Address.City}.");
+namespace Presentation;
+public class ClassA
+{
 }
 
 #!markdown
@@ -110,7 +110,7 @@ Func<string, int> oldParse = (string s) => int.Parse(s);
 #!csharp
 
 // Explicit return type
-// var choose = (bool b) => b ? 1 : "two"; // ERROR: Can't infer return type
+ // var choose = (bool b) => b ? 1 : "two"; // ERROR: Can't infer return type
 
 // explicit return type
 var choose = object (bool b) => b ? 1 : "two"; // Func<bool, object>
@@ -146,8 +146,29 @@ var inc = [return: Example(1)] (int s) => s++;
 var foundParseAttributes = parse.Method.GetCustomAttributes(true).OfType<ExampleAttribute>().ToList();
 var foundChooseAttributes = choose.Method.GetCustomAttributes(true).OfType<Example2Attribute>().ToList();
 
-display($"parse Example value: {foundAttributes[0].Value}");
+display($"parse Example value: {foundParseAttributes[0].Value}");
 display($"choose Example2 value: {foundChooseAttributes[0].Value}");
+
+#!markdown
+
+# Extended property patterns
+
+#!csharp
+
+public record Address(string Street, string City, string State, string Zip);
+public record Person(string FirstName, string LastName, Address Address);
+
+var person = new Person("John", "Doe", new Address("123 Main St", "Anytown", "NY", "12345"));
+
+// new simpler syntax
+if(person is {Address.City: "Anytown"}){
+    display($"Person lives in {person.Address.City}.");
+}
+
+// Prior to C# 10
+if(person is {Address: {City: "Anytown"}}){
+    display($"Person lives in {person.Address.City}.");
+}
 
 #!markdown
 

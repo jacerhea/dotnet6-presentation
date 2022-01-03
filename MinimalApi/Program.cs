@@ -1,7 +1,3 @@
-//var app = WebApplication.Create(args);
-//app.MapGet("/", () => "Hello, World!");
-//app.Run();
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

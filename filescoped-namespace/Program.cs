@@ -1,5 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-var hello = MyCoolNamespace.ClassA.SayHello();
-Console.WriteLine(hello);
+﻿using Presentation;
 
-var nestedClass = new MyCoolNamespace.ClassB.ClassC();
+var foo = new ClassA();
+var bar = new Presentation.ClassC.ClassD();
+
+var baz = new Presentation.ClassE();
