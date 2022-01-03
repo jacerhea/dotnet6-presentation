@@ -54,9 +54,25 @@ display(in20Hours);
 
 #!markdown
 
-# LINQ OrDefault Enhancements
+# LINQ Enhancements
+- https://www.infoq.com/news/2021/04/Net6-Linq/ 
+- Indexing Operations on IEnumerable<T>
+- Counting Operations on IEnumerable<T>
+- Three-way Zip Extension Method
+- Batching Sequences
+- *By Operators
+- OrDefault Enhancement
 
 #!csharp
+
+// indexing operations
+// public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index);
+// public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index);
+// public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range);
+
+var source = Enumerable.Range(0, 100);
+var elements = source.Take(range: 10..^10);
+display(elements);
 
 var hayStack = new List<int> { 1, 2, 3, 4};
 var needle = 5;
