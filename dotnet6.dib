@@ -30,20 +30,19 @@
 
 #!csharp
 
-DateOnly date = DateOnly.FromDateTime(DateTime.Now);
-DateOnly newYears = new DateOnly(2022, 1, 1);
-// there is no "Kind" property.  date.Kind
-display(date); 
+DateOnly now = DateOnly.FromDateTime(DateTime.Now);
+var newYears = new DateOnly(2022, 1, 1);
+// there is no "Kind" property.  
+// now.Kind
+display(now); 
 display(newYears); 
 
 
-TimeOnly time = TimeOnly.FromDateTime(DateTime.Now);
-TimeOnly ptStartTime = new TimeOnly(8, 0);
-display(time); 
+var ptStartTime = new TimeOnly(8, 0);
 display(ptStartTime); 
 
-var in20Hours = time.AddHours(24);
-display(in20Hours); 
+var ptEndTime = ptStartTime.AddHours(9);
+display(ptEndTime); 
 
 #!markdown
 
