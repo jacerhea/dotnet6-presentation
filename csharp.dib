@@ -110,7 +110,7 @@ Func<string, int> oldParse = (string s) => int.Parse(s);
 #!csharp
 
 // Explicit return type
- // var choose = (bool b) => b ? 1 : "two"; // ERROR: Can't infer return type
+// var choose = (bool b) => b ? 1 : "two"; // ERROR: Can't infer return type
 
 // explicit return type
 var choose = object (bool b) => b ? 1 : "two"; // Func<bool, object>
@@ -160,13 +160,14 @@ public record Person(string FirstName, string LastName, Address Address);
 
 var person = new Person("John", "Doe", new Address("123 Main St", "Anytown", "NY", "12345"));
 
-// new simpler syntax
-if(person is {Address.City: "Anytown"}){
-    display($"Person lives in {person.Address.City}.");
-}
 
 // Prior to C# 10
 if(person is {Address: {City: "Anytown"}}){
+    display($"Person lives in {person.Address.City}.");
+}
+
+// new simpler syntax
+if(person is {Address.City: "Anytown"}){
     display($"Person lives in {person.Address.City}.");
 }
 

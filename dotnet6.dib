@@ -24,6 +24,18 @@
 
 #!markdown
 
+# Implicit global using directives
+- Based on SDK.
+- https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
+- In your project file at the sdk levels and/or at individual namespace level.
+- `<ImplicitUsings>enable</ImplicitUsings>`
+- `<ItemGroup>
+  <Using Remove="System.Threading" />
+  <Using Include="Microsoft.Extensions.Logging" />`
+</ItemGroup>
+
+#!markdown
+
 # DateOnly and TimeOnly types
 - Ignore timezones and only deal with calendar dates or time on a 24 hour clock.
 - EF support is not planned until .net 7.
@@ -46,18 +58,6 @@ display(ptEndTime);
 
 #!markdown
 
-# Implicit global using directives
-- Based on SDK.
-- https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
-- In your project file at the sdk levels and/or at individual namespace level.
-- `<ImplicitUsings>enable</ImplicitUsings>`
-- `<ItemGroup>
-  <Using Remove="System.Threading" />
-  <Using Include="Microsoft.Extensions.Logging" />`
-</ItemGroup>
-
-#!markdown
-
 # LINQ Enhancements
 - Indexing Operations on IEnumerable<T>
 - Counting Operations on IEnumerable<T>
@@ -77,21 +77,9 @@ display(ptEndTime);
 // public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index);
 // public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range);
 
-var source = Enumerable.Range(0, 100);
-var elements = source.Take(range: 10..^10);
+var source = Enumerable.Range(0, 10);
+var elements = source.Take(range: 1..^1);
 display(elements);
-
-#!markdown
-
-# Quick Count or default
-
-#!csharp
-
-var source = Enumerable.Range(0, 100);
-// var normalCount = source.Count();
-var found = source.TryGetNonEnumeratedCount(out var count);
-display(found);
-display(count);
 
 #!markdown
 
@@ -117,10 +105,9 @@ var chunkSize = 10;
 foreach(var chunk in list.Chunk(chunkSize)) //Returns a chunk with the correct size. 
 {
     display(chunk);
-
     foreach(var item in chunk)
     {
-        display(item);
+        
     }
 }
 
